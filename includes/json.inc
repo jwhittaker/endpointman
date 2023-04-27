@@ -57,97 +57,96 @@
  */
 
 if(!function_exists('json_decode')) {
+	/**
+	 * Marker constant for Services_JSON::decode(), used to flag stack state
+	 */
+	define('SERVICES_JSON_SLICE',   1);
 
-/**
- * Marker constant for Services_JSON::decode(), used to flag stack state
- */
-define('SERVICES_JSON_SLICE',   1);
+	/**
+	 * Marker constant for Services_JSON::decode(), used to flag stack state
+	 */
+	define('SERVICES_JSON_IN_STR',  2);
 
-/**
- * Marker constant for Services_JSON::decode(), used to flag stack state
- */
-define('SERVICES_JSON_IN_STR',  2);
+	/**
+	 * Marker constant for Services_JSON::decode(), used to flag stack state
+	 */
+	define('SERVICES_JSON_IN_ARR',  3);
 
-/**
- * Marker constant for Services_JSON::decode(), used to flag stack state
- */
-define('SERVICES_JSON_IN_ARR',  3);
+	/**
+	 * Marker constant for Services_JSON::decode(), used to flag stack state
+	 */
+	define('SERVICES_JSON_IN_OBJ',  4);
 
-/**
- * Marker constant for Services_JSON::decode(), used to flag stack state
- */
-define('SERVICES_JSON_IN_OBJ',  4);
+	/**
+	 * Marker constant for Services_JSON::decode(), used to flag stack state
+	 */
+	define('SERVICES_JSON_IN_CMT', 5);
 
-/**
- * Marker constant for Services_JSON::decode(), used to flag stack state
- */
-define('SERVICES_JSON_IN_CMT', 5);
+	/**
+	 * Behavior switch for Services_JSON::decode()
+	 */
+	define('SERVICES_JSON_LOOSE_TYPE', 16);
 
-/**
- * Behavior switch for Services_JSON::decode()
- */
-define('SERVICES_JSON_LOOSE_TYPE', 16);
+	/**
+	 * Behavior switch for Services_JSON::decode()
+	 */
+	define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 
-/**
- * Behavior switch for Services_JSON::decode()
- */
-define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
-
-/**
- *
- */
-define('JSON_PRETTY_PRINT', 100);
+	/**
+	 *
+	 */
+	define('JSON_PRETTY_PRINT', 100);
 
 	//Pretty Print json function
 	function indent($json) {
 
-	    $result      = '';
-	    $pos         = 0;
-	    $strLen      = strlen($json);
-	    $indentStr   = '  ';
-	    $newLine     = "\n";
-	    $prevChar    = '';
-	    $outOfQuotes = true;
+		$result      = '';
+		$pos         = 0;
+		$strLen      = strlen($json);
+		$indentStr   = '  ';
+		$newLine     = "\n";
+		$prevChar    = '';
+		$outOfQuotes = true;
 
-	    for ($i=0; $i<=$strLen; $i++) {
+		for ($i=0; $i<=$strLen; $i++) {
 
-	        // Grab the next character in the string.
-	        $char = substr($json, $i, 1);
+			// Grab the next character in the string.
+			$char = substr($json, $i, 1);
 
-	        // Are we inside a quoted string?
-	        if ($char == '"' && $prevChar != '\\') {
-	            $outOfQuotes = !$outOfQuotes;
+			// Are we inside a quoted string?
+			if ($char == '"' && $prevChar != '\\') {
+				$outOfQuotes = !$outOfQuotes;
 
-	        // If this character is the end of an element, 
-	        // output a new line and indent the next line.
-	        } else if(($char == '}' || $char == ']') && $outOfQuotes) {
-	            $result .= $newLine;
-	            $pos --;
-	            for ($j=0; $j<$pos; $j++) {
-	                $result .= $indentStr;
-	            }
-	        }
+			// If this character is the end of an element, 
+			// output a new line and indent the next line.
+			} else if(($char == '}' || $char == ']') && $outOfQuotes) {
+				$result .= $newLine;
+				$pos --;
+				for ($j=0; $j<$pos; $j++) {
+					$result .= $indentStr;
+				}
+			}
 
-	        // Add the character to the result string.
-	        $result .= $char;
+			// Add the character to the result string.
+			$result .= $char;
 
-	        // If the last character was the beginning of an element, 
-	        // output a new line and indent the next line.
-	        if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
-	            $result .= $newLine;
-	            if ($char == '{' || $char == '[') {
-	                $pos ++;
-	            }
+			// If the last character was the beginning of an element, 
+			// output a new line and indent the next line.
+			if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
+				$result .= $newLine;
+				if ($char == '{' || $char == '[') {
+					$pos ++;
+				}
 
-	            for ($j = 0; $j < $pos; $j++) {
-	                $result .= $indentStr;
-	            }
-	        }
+				for ($j = 0; $j < $pos; $j++) {
+					$result .= $indentStr;
+				}
+			}
 
-	        $prevChar = $char;
-	    }
+			$prevChar = $char;
+		}
 
-	    return $result;
+		return $result;
 	}
 
 	function json_decode($input,$array=FALSE) {

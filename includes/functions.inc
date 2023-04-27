@@ -33,7 +33,7 @@ class endpointmanager {
         require_once('system_functions.class');
         $this->system = new epm_system();
 
-        require_once('json.inc');
+        //require_once('json.inc');
 
         $this->global_cfg = $this->eda->get_stored_globals();
 
