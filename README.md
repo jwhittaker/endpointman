@@ -154,8 +154,9 @@ Substitute in `wget https://github.com/billsimon/endpointman/archive/refs/heads/
 cd /var/www/html/admin/modules/
 rm -rf endpointman
 wget https://github.com/jwhittaker/endpointman/archive/refs/heads/php7-syntax-fixes.zip
-unzip 16.0.zip
-mv endpointman-release-16.0 endpointman
+unzip php7-syntax-fixes.zip
+mv endpointman-php7-syntax-fixes endpointman
+rm php7-syntax-fixes.zip
 chown -R asterisk:asterisk endpointman
 fwconsole reload
 ```
