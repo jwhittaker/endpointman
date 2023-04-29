@@ -148,10 +148,12 @@ https://github.com/billsimon/endpointman/commit/9b3a807970a983a5be35170029839bb3
 
 Updating this in-place can be done by downloading the zip file from github and swapping in the directory.
 
+Substitute in `wget https://github.com/billsimon/endpointman/archive/refs/heads/release/16.0.zip` for the origin this fork is based off of.
+
 ```
 cd /var/www/html/admin/modules/
 rm -rf endpointman
-wget https://github.com/billsimon/endpointman/archive/refs/heads/release/16.0.zip
+wget https://github.com/jwhittaker/endpointman/archive/refs/heads/php7-syntax-fixes.zip
 unzip 16.0.zip
 mv endpointman-release-16.0 endpointman
 chown -R asterisk:asterisk endpointman
